@@ -1047,7 +1047,7 @@ ldap_back_cf_gen( ConfigArgs *c )
 
 			if ( i ) {
 				bv.bv_len -= i;
-				AC_MEMCPY( bv.bv_val, &bv.bv_val[ i ],
+				memmove( bv.bv_val, &bv.bv_val[ i ],
 					bv.bv_len + 1 );
 			}
 
@@ -1239,7 +1239,7 @@ ldap_back_cf_gen( ConfigArgs *c )
 
 				if ( i ) {
 					bc.bv_len -= i;
-					AC_MEMCPY( bc.bv_val, &bc.bv_val[ i ], bc.bv_len + 1 );
+					memmove( bc.bv_val, &bc.bv_val[ i ], bc.bv_len + 1 );
 				}
 
 				bv = bc;
@@ -1298,7 +1298,7 @@ ldap_back_cf_gen( ConfigArgs *c )
 
 			if ( i ) {
 				bv.bv_len -= i;
-				AC_MEMCPY( bv.bv_val, &bv.bv_val[ i ],
+				memmove( bv.bv_val, &bv.bv_val[ i ],
 					bv.bv_len + 1 );
 			}
 

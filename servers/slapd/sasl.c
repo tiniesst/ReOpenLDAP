@@ -1342,7 +1342,7 @@ slap_sasl_peer2ipport( struct berval *peer )
 		*p = ';';
 		if ( isv6 ) {
 			assert( p[-1] == ']' );
-			AC_MEMCPY( &p[-1], p, plen - ( p - ipport ) + 1 );
+			memmove( &p[-1], p, plen - ( p - ipport ) + 1 );
 		}
 
 	} else if ( isv6 ) {
