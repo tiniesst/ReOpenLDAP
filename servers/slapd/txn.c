@@ -154,14 +154,14 @@ static int txn_put_ctrls( Operation *op, BerElement *ber, txn_rctrls *tr )
 int txn_end_extop(
 	Operation *op, SlapReply *rs )
 {
-	int rc;
+	int rc = LDAP_OTHER;
 	BerElementBuffer berbuf;
 	BerElement *ber = (BerElement *)&berbuf;
 	ber_tag_t tag;
 	ber_len_t len;
 	ber_int_t commit=1;
 	struct berval txnid;
-	Operation *o, *p;
+	Operation *o, *p = NULL;
 	Connection *c = op->o_conn;
 
 	Statslog( LDAP_DEBUG_STATS, "%s TXN END\n",

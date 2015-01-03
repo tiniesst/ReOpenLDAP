@@ -1466,7 +1466,7 @@ tool_bind( LDAP *ld )
 	int rc, msgid;
 	LDAPMessage *result = NULL;
 
-	int err;
+	int err = LDAP_SUCCESS;
 	char *matched = NULL;
 	char *info = NULL;
 	char **refs = NULL;

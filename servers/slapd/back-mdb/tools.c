@@ -610,7 +610,7 @@ mdb_tool_index_add(
 static int
 mdb_tool_index_finish()
 {
-	int i, rc;
+	int i, rc = LDAP_SUCCESS;
 	ldap_pvt_thread_mutex_lock( &mdb_tool_index_mutex );
 	for ( i=1; i<mdb_tool_threads; i++ ) {
 		if ( mdb_tool_index_rec[i].ir_i == LDAP_BUSY ) {

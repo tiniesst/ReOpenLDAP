@@ -1987,7 +1987,7 @@ config_generic(ConfigArgs *c) {
 			break;
 
 		case CFG_SORTVALS: {
-			ADlist *svnew = NULL, *svtail, *sv;
+			ADlist *svnew = NULL, *svtail = NULL, *sv = NULL;
 
 			for ( i = 1; i < c->argc; i++ ) {
 				AttributeDescription *ad = NULL;
@@ -2004,6 +2004,7 @@ sortval_reject:
 					for ( sv = svnew; sv; sv = svnew ) {
 						svnew = sv->al_next;
 						ch_free( sv );
+						sv = NULL;
 					}
 					return 1;
 				}
@@ -2022,6 +2023,7 @@ sortval_reject:
 				}
 				svtail = sv;
 			}
+			assert(sv != NULL);
 			sv->al_next = NULL;
 			for ( sv = svnew; sv; sv = sv->al_next )
 				sv->al_desc->ad_type->sat_flags |= SLAP_AT_SORTED_VAL;
@@ -6188,7 +6190,7 @@ config_back_modrdn( Operation *op, SlapReply *rs )
 	CfBackInfo *cfb;
 	CfEntryInfo *ce, *last;
 	struct berval rdn;
-	int ixold, ixnew;
+	int ixold = -1, ixnew = -1;
 
 	cfb = (CfBackInfo *)op->o_bd->be_private;
 
@@ -7173,7 +7175,7 @@ config_back_db_open( BackendDB *be, ConfigReply *cr )
 			slap_overinst *on;
 			Entry *oe;
 			int j;
-			voidList *vl, *v0 = NULL;
+			voidList *vl = NULL, *v0 = NULL;
 
 			/* overlays are in LIFO order, must reverse stack */
 			for (on=oi->oi_list; on; on=on->on_next) {
@@ -7186,6 +7188,7 @@ config_back_db_open( BackendDB *be, ConfigReply *cr )
 				on = vl->vl_ptr;
 				v0 = vl->vl_next;
 				ch_free( vl );
+				vl = NULL;
 				if ( on->on_bi.bi_db_config && !on->on_bi.bi_cf_ocs ) {
 					Debug( LDAP_DEBUG_ANY,
 						"WARNING: No dynamic config support for overlay %s.\n",

@@ -50,9 +50,9 @@ slapmodify( int argc, char **argv )
 	const char *progname = "slapmodify";
 
 	struct berval csn;
-	unsigned long sid;
+	unsigned long sid = 0;
 	struct berval bvtext;
-	ID id;
+	ID id = NOID;
 	OperationBuffer opbuf;
 	Operation *op;
 
