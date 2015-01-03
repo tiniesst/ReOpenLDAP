@@ -200,6 +200,7 @@ enum {
 	CFG_DISABLED,
 	CFG_THREADQS,
 	CFG_TLS_ECNAME,
+	CFG_BACKTRACE,
 
 	CFG_LAST
 };
@@ -807,6 +808,11 @@ static ConfigTable config_back_cf_table[] = {
 	{ "writetimeout", "timeout", 2, 2, 0, ARG_INT,
 		&global_writetimeout, "( OLcfgGlAt:88 NAME 'olcWriteTimeout' "
 			"SYNTAX OMsInteger SINGLE-VALUE )", NULL, NULL },
+
+	{ "crash-backtrace", "on|off", 2, 2, 0, ARG_ON_OFF|ARG_MAGIC|CFG_BACKTRACE,
+		&config_generic, "( OLcfgGlAt:0.42 NAME 'olcCrashBacktrace' "
+			"DESC 'Backtrace generation on SIGSEGV/SIGABRT' "
+			"SYNTAX OMsBoolean SINGLE-VALUE )", NULL, NULL },
 	{ NULL,	NULL, 0, 0, 0, ARG_IGNORED,
 		NULL, NULL, NULL, NULL }
 };
@@ -1011,6 +1017,9 @@ config_generic(ConfigArgs *c) {
 			break;
 		case CFG_RO:
 			c->value_int = (c->be->be_restrictops & SLAP_RESTRICT_READONLY);
+			break;
+		case CFG_BACKTRACE:
+			c->value_int = slap_backtrace_get_enable();
 			break;
 		case CFG_AZPOLICY:
 			c->value_string = ch_strdup( slap_sasl_getpolicy());
@@ -1345,6 +1354,7 @@ config_generic(ConfigArgs *c) {
 		case CFG_TTHREADS:
 		case CFG_LTHREADS:
 		case CFG_RO:
+		case CFG_BACKTRACE:
 		case CFG_AZPOLICY:
 		case CFG_DEPTH:
 		case CFG_LASTMOD:
@@ -1770,6 +1780,10 @@ config_generic(ConfigArgs *c) {
 				c->be->be_restrictops |= SLAP_RESTRICT_READONLY;
 			else
 				c->be->be_restrictops &= ~SLAP_RESTRICT_READONLY;
+			break;
+
+		case CFG_BACKTRACE:
+			slap_backtrace_set_enable( c->value_int );
 			break;
 
 		case CFG_AZPOLICY:
