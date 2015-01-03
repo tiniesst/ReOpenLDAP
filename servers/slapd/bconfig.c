@@ -201,6 +201,8 @@ enum {
 	CFG_THREADQS,
 	CFG_TLS_ECNAME,
 	CFG_BACKTRACE,
+	CFG_MEMORY,
+	CFG_COREDUMP,
 
 	CFG_LAST
 };
@@ -813,6 +815,15 @@ static ConfigTable config_back_cf_table[] = {
 		&config_generic, "( OLcfgGlAt:0.42 NAME 'olcCrashBacktrace' "
 			"DESC 'Backtrace generation on SIGSEGV/SIGABRT' "
 			"SYNTAX OMsBoolean SINGLE-VALUE )", NULL, NULL },
+	{ "memory-limit", "mbytes", 2, 2, 0, ARG_INT|ARG_MAGIC|CFG_MEMORY,
+		&config_generic, "( OLcfgGlAt:0.43 NAME 'olcMemoryLimit' "
+			"DESC 'Limit memory usage' "
+			"SYNTAX OMsInteger SINGLE-VALUE )", NULL, NULL },
+	{ "coredump-limit", "mbytes", 2, 2, 0, ARG_INT|ARG_MAGIC|CFG_COREDUMP,
+		&config_generic, "( OLcfgGlAt:0.44 NAME 'olcCoredumpLimit' "
+			"DESC 'Limit coredump size' "
+			"SYNTAX OMsInteger SINGLE-VALUE )", NULL, NULL },
+
 	{ NULL,	NULL, 0, 0, 0, ARG_IGNORED,
 		NULL, NULL, NULL, NULL }
 };
@@ -1020,6 +1031,12 @@ config_generic(ConfigArgs *c) {
 			break;
 		case CFG_BACKTRACE:
 			c->value_int = slap_backtrace_get_enable();
+			break;
+		case CFG_MEMORY:
+			c->value_int = slap_limit_memory_get();
+			break;
+		case CFG_COREDUMP:
+			c->value_int = slap_limit_coredump_get();
 			break;
 		case CFG_AZPOLICY:
 			c->value_string = ch_strdup( slap_sasl_getpolicy());
@@ -1355,6 +1372,8 @@ config_generic(ConfigArgs *c) {
 		case CFG_LTHREADS:
 		case CFG_RO:
 		case CFG_BACKTRACE:
+		case CFG_MEMORY:
+		case CFG_COREDUMP:
 		case CFG_AZPOLICY:
 		case CFG_DEPTH:
 		case CFG_LASTMOD:
@@ -1784,6 +1803,16 @@ config_generic(ConfigArgs *c) {
 
 		case CFG_BACKTRACE:
 			slap_backtrace_set_enable( c->value_int );
+			break;
+
+		case CFG_MEMORY:
+			if (slap_limit_memory_set(c->value_int))
+				return 1;
+			break;
+
+		case CFG_COREDUMP:
+			if (slap_limit_coredump_set(c->value_int))
+				return 1;
 			break;
 
 		case CFG_AZPOLICY:
