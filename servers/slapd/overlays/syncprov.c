@@ -431,7 +431,7 @@ syncprov_findbase( Operation *op, fbase_cookie *fc )
 		slap_callback cb = {0};
 		Operation fop;
 		SlapReply frs = { REP_RESULT };
-		int rc;
+		int rc ALLOW_UNUSED;
 
 		fc->fss->s_flags ^= PS_FIND_BASE;
 		ldap_pvt_thread_mutex_unlock( &fc->fss->s_mutex );
@@ -461,6 +461,7 @@ syncprov_findbase( Operation *op, fbase_cookie *fc )
 		fop.ors_filterstr = generic_filterstr;
 
 		rc = fop.o_bd->be_search( &fop, &frs );
+		/* ignore result */
 	} else {
 		ldap_pvt_thread_mutex_unlock( &fc->fss->s_mutex );
 		fc->fbase = 1;
@@ -613,7 +614,7 @@ syncprov_findcsn( Operation *op, find_csn_t mode, struct berval *csn )
 	Filter cf;
 	AttributeAssertion eq = ATTRIBUTEASSERTION_INIT;
 	fpres_cookie pcookie;
-	sync_control *srs = NULL;
+	sync_control *srs ALLOW_UNUSED = NULL;
 	struct slap_limits_set fc_limits;
 	int i, rc = LDAP_SUCCESS, findcsn_retry = 1;
 	int maxid = -1;
@@ -984,7 +985,7 @@ syncprov_qtask( void *ctx, void *arg )
 	OperationBuffer opbuf;
 	Operation *op;
 	BackendDB be;
-	int rc;
+	int rc ALLOW_UNUSED;
 
 	op = &opbuf.ob_op;
 	*op = *so->s_op;
@@ -1007,6 +1008,7 @@ syncprov_qtask( void *ctx, void *arg )
 	op->o_callback = NULL;
 
 	rc = syncprov_qplay( op, so );
+	/* ignore result */
 
 	/* decrement use count... */
 	syncprov_free_syncop( so );
@@ -1568,7 +1570,7 @@ syncprov_add_slog( Operation *op )
 		}
 		sl->sl_num++;
 		while ( sl->sl_num > sl->sl_size ) {
-			int i, j;
+			int i;
 			se = sl->sl_head;
 			sl->sl_head = se->se_next;
 			for ( i=0; i<sl->sl_numcsns; i++ )
@@ -1706,7 +1708,7 @@ syncprov_playlog( Operation *op, SlapReply *rs, sessionlog *sl,
 
 	if ( mmods ) {
 		Operation fop;
-		int rc;
+		int rc ALLOW_UNUSED;
 		Filter mf, af;
 		AttributeAssertion eq = ATTRIBUTEASSERTION_INIT;
 		slap_callback cb = {0};
@@ -1742,6 +1744,7 @@ syncprov_playlog( Operation *op, SlapReply *rs, sessionlog *sl,
 			cb.sc_private = NULL;
 			fop.ors_slimit = 1;
 			rc = fop.o_bd->be_search( &fop, &frs );
+			/* ignore result */
 
 			/* If entry was not found, add to delete list */
 			if ( !cb.sc_private ) {

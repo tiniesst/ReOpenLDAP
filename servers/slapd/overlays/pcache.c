@@ -5441,7 +5441,7 @@ pcache_monitor_free(
 	const char	*text;
 	char		textbuf[ SLAP_TEXT_BUFLEN ];
 
-	int		rc;
+	int		rc ALLOW_UNUSED;
 
 	/* NOTE: if slap_shutdown != 0, priv might have already been freed */
 	*priv = NULL;

@@ -74,16 +74,19 @@ static Filter		*tool_filter;
 static Entry		*tool_next_entry;
 
 static ID mdb_tool_ix_id;
-static BackendDB *mdb_tool_ix_be;
 static MDB_txn *mdb_tool_ix_txn;
 static int mdb_tool_index_tcount, mdb_tool_threads;
 static IndexRec *mdb_tool_index_rec;
 static AttrIxInfo **mdb_tool_axinfo;
-static struct mdb_info *mdb_tool_info;
 static ldap_pvt_thread_mutex_t mdb_tool_index_mutex;
 static ldap_pvt_thread_cond_t mdb_tool_index_cond_main;
 static ldap_pvt_thread_cond_t mdb_tool_index_cond_work;
+
+#ifdef MDB_TOOL_IDL_CACHING
+static BackendDB *mdb_tool_ix_be;
+static struct mdb_info *mdb_tool_info;
 static void * mdb_tool_index_task( void *ctx, void *ptr );
+#endif /* MDB_TOOL_IDL_CACHING */
 
 static int	mdb_writes, mdb_writes_per_commit;
 
@@ -449,7 +452,7 @@ static int mdb_tool_next_id(
 	struct berval *text,
 	int hole )
 {
-	struct mdb_info *mdb = (struct mdb_info *) op->o_bd->be_private;
+	struct mdb_info *mdb ALLOW_UNUSED = (struct mdb_info *) op->o_bd->be_private;
 	struct berval dn = e->e_name;
 	struct berval ndn = e->e_nname;
 	struct berval pdn, npdn, nmatched;
@@ -1044,6 +1047,7 @@ done:
 	return e->e_id;
 }
 
+#ifdef MDB_TOOL_IDL_CACHING
 static void *
 mdb_tool_index_task( void *ctx, void *ptr )
 {
@@ -1085,7 +1089,6 @@ mdb_tool_index_task( void *ctx, void *ptr )
 	return NULL;
 }
 
-#ifdef MDB_TOOL_IDL_CACHING
 static int
 mdb_tool_idl_cmp( const void *v1, const void *v2 )
 {
@@ -1353,7 +1356,6 @@ mdb_dn2id_upgrade( BackendDB *be ) {
 	MDB_txn *mt;
 	MDB_cursor *mc = NULL;
 	MDB_val key, data;
-	char *ptr;
 	int rc, writes=0, depth=0;
 	int enable_meter = 0;
 	ID id = 0, *num, count = 0;
