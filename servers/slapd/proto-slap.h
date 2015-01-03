@@ -760,6 +760,7 @@ LDAP_SLAPD_F (int) config_generic_wrapper LDAP_P(( Backend *be,
 LDAP_SLAPD_F (char *) anlist_unparse LDAP_P(( AttributeName *, char *, ber_len_t buflen ));
 LDAP_SLAPD_F (int) slap_keepalive_parse( struct berval *val, void *bc,
 	slap_cf_aux_table *tab0, const char *tabmsg, int unparse );
+LDAP_SLAPD_F (void) slap_client_keepalive(LDAP *ld, slap_keepalive *sk);
 
 #ifdef LDAP_SLAPI
 LDAP_SLAPD_V (int) slapi_plugins_used;
@@ -1675,6 +1676,8 @@ LDAP_SLAPD_F (char **) slap_sasl_mechs( Connection *c );
 LDAP_SLAPD_F (int) slap_sasl_external( Connection *c,
 	slap_ssf_t ssf,	/* relative strength of external security */
 	struct berval *authid );	/* asserted authenication id */
+
+LDAP_SLAPD_F (int) slap_sasl_cbinding( Connection *c, struct berval * );
 
 LDAP_SLAPD_F (int) slap_sasl_reset( Connection *c );
 LDAP_SLAPD_F (int) slap_sasl_close( Connection *c );
