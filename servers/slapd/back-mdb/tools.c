@@ -1054,7 +1054,7 @@ mdb_tool_index_task( void *ctx, void *ptr )
 	int base = *(int *)ptr;
 	Operation op = {0};
 	Opheader ohdr = {0};
-	AttrIxInfo ai = {0}, *aio;
+	AttrIxInfo ai = {{{0}}}, *aio;
 
 	free( ptr );
 	op.o_hdr = &ohdr;
