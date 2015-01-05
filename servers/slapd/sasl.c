@@ -1510,7 +1510,7 @@ int slap_sasl_cbinding( Connection *conn, struct berval *cbv )
 	cb->critical = 0;
 	cb->data = (unsigned char *)(cb+1);
 	cb->len = cbv->bv_len;
-	memcpy( cb->data, cbv->bv_val, cbv->bv_len );
+	memcpy( (char *) cb->data, cbv->bv_val, cbv->bv_len );
 	sasl_setprop( conn->c_sasl_authctx, SASL_CHANNEL_BINDING, cb );
 	conn->c_sasl_cbind = cb;
 #endif
