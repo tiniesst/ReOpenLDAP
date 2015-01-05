@@ -495,7 +495,7 @@ ldap_int_sasl_bind(
 						cbv.bv_len);
 					cb->name = "ldap";
 					cb->critical = 0;
-					cb->data = (char *)(cb+1);
+					cb->data = (unsigned char *)(cb+1);
 					cb->len = cbv.bv_len;
 					memcpy( cb->data, cbv.bv_val, cbv.bv_len );
 					sasl_setprop( ld->ld_defconn->lconn_sasl_authctx,

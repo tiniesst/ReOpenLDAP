@@ -1508,7 +1508,7 @@ int slap_sasl_cbinding( Connection *conn, struct berval *cbv )
 	sasl_channel_binding_t *cb = ch_malloc( sizeof(*cb) + cbv->bv_len );;
 	cb->name = "ldap";
 	cb->critical = 0;
-	cb->data = (char *)(cb+1);
+	cb->data = (unsigned char *)(cb+1);
 	cb->len = cbv->bv_len;
 	memcpy( cb->data, cbv->bv_val, cbv->bv_len );
 	sasl_setprop( conn->c_sasl_authctx, SASL_CHANNEL_BINDING, cb );

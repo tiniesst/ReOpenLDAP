@@ -727,7 +727,7 @@ tlso_session_peercert( tls_session *sess, struct berval *der )
 	der->bv_val = LDAP_MALLOC(der->bv_len);
 	if ( !der->bv_val )
 		return -1;
-	ptr = der->bv_val;
+	ptr = (unsigned char *) der->bv_val;
 	i2d_X509(x, &ptr);
 	return 0;
 }
