@@ -231,7 +231,7 @@ syncprov_state_ctrl(
 	if ( ret < 0 ) {
 		Debug( LDAP_DEBUG_TRACE,
 			"slap_build_sync_ctrl: ber_flatten2 failed (%d)\n",
-			ret, 0, 0 );
+			ret );
 		send_ldap_error( op, rs, LDAP_OTHER, "internal error" );
 		return LDAP_OTHER;
 	}
@@ -284,7 +284,7 @@ syncprov_done_ctrl(
 	if ( ret < 0 ) {
 		Debug( LDAP_DEBUG_TRACE,
 			"syncprov_done_ctrl: ber_flatten2 failed (%d)\n",
-			ret, 0, 0 );
+			ret );
 		send_ldap_error( op, rs, LDAP_OTHER, "internal error" );
 		return LDAP_OTHER;
 	}
@@ -341,7 +341,7 @@ syncprov_sendinfo(
 		default:
 			Debug( LDAP_DEBUG_TRACE,
 				"syncprov_sendinfo: invalid syncinfo type (%d)\n",
-				type, 0, 0 );
+				type );
 			return LDAP_OTHER;
 		}
 	}
@@ -351,7 +351,7 @@ syncprov_sendinfo(
 	if ( ret < 0 ) {
 		Debug( LDAP_DEBUG_TRACE,
 			"syncprov_sendinfo: ber_flatten2 failed (%d)\n",
-			ret, 0, 0 );
+			ret );
 		send_ldap_error( op, rs, LDAP_OTHER, "internal error" );
 		return LDAP_OTHER;
 	}
@@ -412,7 +412,7 @@ findbase_cb( Operation *op, SlapReply *rs )
 		}
 	}
 	if ( rs->sr_err != LDAP_SUCCESS ) {
-		Debug( LDAP_DEBUG_ANY, "findbase failed! %d\n", rs->sr_err,0,0 );
+		Debug( LDAP_DEBUG_ANY, "findbase failed! %d\n", rs->sr_err );
 	}
 	return LDAP_SUCCESS;
 }
@@ -849,10 +849,10 @@ syncprov_sendresp( Operation *op, opcookie *opc, syncops *so, int mode )
 #ifdef LDAP_DEBUG
 	if ( so->s_sid > 0 ) {
 		Debug( LDAP_DEBUG_SYNC, "syncprov_sendresp: to=%03x, cookie=%s\n",
-			so->s_sid, cookie.bv_val, 0 );
+			so->s_sid, cookie.bv_val );
 	} else {
 		Debug( LDAP_DEBUG_SYNC, "syncprov_sendresp: cookie=%s\n",
-			cookie.bv_val, 0, 0 );
+			cookie.bv_val );
 	}
 #endif
 
@@ -1243,14 +1243,14 @@ syncprov_matchops( Operation *op, opcookie *opc, int saveit )
 		/* Don't send ops back to the originator */
 		if ( opc->osid > 0 && opc->osid == ss->s_sid ) {
 			Debug( LDAP_DEBUG_SYNC, "syncprov_matchops: skipping original sid %03x\n",
-				opc->osid, 0, 0 );
+				opc->osid );
 			continue;
 		}
 
 		/* Don't send ops back to the messenger */
 		if ( opc->rsid > 0 && opc->rsid == ss->s_sid ) {
 			Debug( LDAP_DEBUG_SYNC, "syncprov_matchops: skipping relayed sid %03x\n",
-				opc->rsid, 0, 0 );
+				opc->rsid );
 			continue;
 		}
 
@@ -1631,10 +1631,10 @@ syncprov_playlog( Operation *op, SlapReply *rs, sessionlog *sl,
 	 * unlock the list mutex.
 	 */
 	Debug( LDAP_DEBUG_SYNC, "srs csn %s\n",
-		srs->sr_state.ctxcsn[0].bv_val, 0, 0 );
+		srs->sr_state.ctxcsn[0].bv_val );
 	for ( se=sl->sl_head; se; se=se->se_next ) {
 		int k;
-		Debug( LDAP_DEBUG_SYNC, "log csn %s\n", se->se_csn.bv_val, 0, 0 );
+		Debug( LDAP_DEBUG_SYNC, "log csn %s\n", se->se_csn.bv_val );
 		ndel = 1;
 		for ( k=0; k<srs->sr_state.numcsns; k++ ) {
 			if ( se->se_sid == srs->sr_state.sids[k] ) {
@@ -1643,7 +1643,7 @@ syncprov_playlog( Operation *op, SlapReply *rs, sessionlog *sl,
 			}
 		}
 		if ( ndel <= 0 ) {
-			Debug( LDAP_DEBUG_SYNC, "cmp %d, too old\n", ndel, 0, 0 );
+			Debug( LDAP_DEBUG_SYNC, "cmp %d, too old\n", ndel );
 			continue;
 		}
 		ndel = 0;
@@ -1654,7 +1654,7 @@ syncprov_playlog( Operation *op, SlapReply *rs, sessionlog *sl,
 			}
 		}
 		if ( ndel > 0 ) {
-			Debug( LDAP_DEBUG_SYNC, "cmp %d, too new\n", ndel, 0, 0 );
+			Debug( LDAP_DEBUG_SYNC, "cmp %d, too new\n", ndel );
 			break;
 		}
 		if ( se->se_tag == LDAP_REQ_DELETE ) {
@@ -1758,7 +1758,7 @@ syncprov_playlog( Operation *op, SlapReply *rs, sessionlog *sl,
 			slap_compose_sync_cookie( op, &cookie, delcsn, srs->sr_state.rid,
 				slap_serverID ? slap_serverID : -1 );
 
-			Debug( LDAP_DEBUG_SYNC, "syncprov_playlog: cookie=%s\n", cookie.bv_val, 0, 0 );
+			Debug( LDAP_DEBUG_SYNC, "syncprov_playlog: cookie=%s\n", cookie.bv_val );
 		}
 
 		uuids[ndel].bv_val = NULL;
@@ -2288,7 +2288,7 @@ syncprov_search_response( Operation *op, SlapReply *rs )
 		 */
 		if ( !rs->sr_entry ) {
 			assert( rs->sr_entry != NULL );
-			Debug( LDAP_DEBUG_ANY, "bogus referral in context\n",0,0,0 );
+			Debug( LDAP_DEBUG_ANY, "bogus referral in context\n" );
 			return SLAP_CB_CONTINUE;
 		}
 		a = attr_find( rs->sr_entry->e_attrs, slap_schema.si_ad_entryCSN );
@@ -2303,7 +2303,7 @@ syncprov_search_response( Operation *op, SlapReply *rs )
 			if ( sid == srs->sr_state.sid && srs->sr_state.numcsns ) {
 				Debug( LDAP_DEBUG_SYNC,
 					"Entry %s changed by peer, ignored\n",
-					rs->sr_entry->e_name.bv_val, 0, 0 );
+					rs->sr_entry->e_name.bv_val );
 				return LDAP_SUCCESS;
 			}
 
@@ -2362,7 +2362,7 @@ syncprov_search_response( Operation *op, SlapReply *rs )
 			slap_compose_sync_cookie( op, &cookie, ss->ss_ctxcsn,
 				srs->sr_state.rid, slap_serverID ? slap_serverID : -1 );
 
-			Debug( LDAP_DEBUG_SYNC, "syncprov_search_response: cookie=%s\n", cookie.bv_val, 0, 0 );
+			Debug( LDAP_DEBUG_SYNC, "syncprov_search_response: cookie=%s\n", cookie.bv_val );
 		}
 
 		/* Is this a regular refresh?
@@ -2953,28 +2953,28 @@ sp_cf_gen(ConfigArgs *c)
 			snprintf( c->cr_msg, sizeof( c->cr_msg ), "%s unable to parse checkpoint ops # \"%s\"",
 				c->argv[0], c->argv[1] );
 			Debug( LDAP_DEBUG_CONFIG|LDAP_DEBUG_NONE,
-				"%s: %s\n", c->log, c->cr_msg, 0 );
+				"%s: %s\n", c->log, c->cr_msg );
 			return ARG_BAD_CONF;
 		}
 		if ( si->si_chkops <= 0 ) {
 			snprintf( c->cr_msg, sizeof( c->cr_msg ), "%s invalid checkpoint ops # \"%d\"",
 				c->argv[0], si->si_chkops );
 			Debug( LDAP_DEBUG_CONFIG|LDAP_DEBUG_NONE,
-				"%s: %s\n", c->log, c->cr_msg, 0 );
+				"%s: %s\n", c->log, c->cr_msg );
 			return ARG_BAD_CONF;
 		}
 		if ( lutil_atoi( &si->si_chktime, c->argv[2] ) != 0 ) {
 			snprintf( c->cr_msg, sizeof( c->cr_msg ), "%s unable to parse checkpoint time \"%s\"",
 				c->argv[0], c->argv[1] );
 			Debug( LDAP_DEBUG_CONFIG|LDAP_DEBUG_NONE,
-				"%s: %s\n", c->log, c->cr_msg, 0 );
+				"%s: %s\n", c->log, c->cr_msg );
 			return ARG_BAD_CONF;
 		}
 		if ( si->si_chktime <= 0 ) {
 			snprintf( c->cr_msg, sizeof( c->cr_msg ), "%s invalid checkpoint time \"%d\"",
 				c->argv[0], si->si_chkops );
 			Debug( LDAP_DEBUG_CONFIG|LDAP_DEBUG_NONE,
-				"%s: %s\n", c->log, c->cr_msg, 0 );
+				"%s: %s\n", c->log, c->cr_msg );
 			return ARG_BAD_CONF;
 		}
 		si->si_chktime *= 60;
@@ -2987,7 +2987,7 @@ sp_cf_gen(ConfigArgs *c)
 			snprintf( c->cr_msg, sizeof( c->cr_msg ), "%s size %d is negative",
 				c->argv[0], size );
 			Debug( LDAP_DEBUG_CONFIG|LDAP_DEBUG_NONE,
-				"%s: %s\n", c->log, c->cr_msg, 0 );
+				"%s: %s\n", c->log, c->cr_msg );
 			return ARG_BAD_CONF;
 		}
 		sl = si->si_logs;
@@ -3050,7 +3050,7 @@ syncprov_db_open(
 
 	if ( !SLAP_LASTMOD( be )) {
 		Debug( LDAP_DEBUG_ANY,
-			"syncprov_db_open: invalid config, lastmod must be enabled\n", 0, 0, 0 );
+			"syncprov_db_open: invalid config, lastmod must be enabled\n" );
 		return -1;
 	}
 
@@ -3202,8 +3202,7 @@ syncprov_db_init(
 
 	if ( SLAP_ISGLOBALOVERLAY( be ) ) {
 		Debug( LDAP_DEBUG_ANY,
-			"syncprov must be instantiated within a database.\n",
-			0, 0, 0 );
+			"syncprov must be instantiated within a database.\n" );
 		return 1;
 	}
 
@@ -3393,7 +3392,7 @@ syncprov_initialize()
 		syncprov_parseCtrl, &slap_cids.sc_LDAPsync );
 	if ( rc != LDAP_SUCCESS ) {
 		Debug( LDAP_DEBUG_ANY,
-			"syncprov_init: Failed to register control %d\n", rc, 0, 0 );
+			"syncprov_init: Failed to register control %d\n", rc );
 		return rc;
 	}
 

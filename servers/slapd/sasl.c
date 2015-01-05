@@ -210,7 +210,7 @@ sasl_ap_lookup( Operation *op, SlapReply *rs )
 		rc = slap_str2ad( name, &ad, &text );
 		if ( rc != LDAP_SUCCESS ) {
 			Debug( LDAP_DEBUG_TRACE,
-				"slap_ap_lookup: str2ad(%s): %s\n", name, text, 0 );
+				"slap_ap_lookup: str2ad(%s): %s\n", name, text );
 			continue;
 		}
 
@@ -862,7 +862,7 @@ slap_sasl_authorize(
 	if ( rc != LDAP_SUCCESS ) {
 		Debug( LDAP_DEBUG_TRACE, "SASL Proxy Authorize [conn=%ld]: "
 			"proxy authorization disallowed (%d)\n",
-			conn ? (long) conn->c_connid : -1L, rc, 0 );
+			conn ? (long) conn->c_connid : -1L, rc );
 
 		sasl_seterror( sconn, 0, "not authorized" );
 		return SASL_NOAUTHZ;
@@ -877,13 +877,13 @@ ok:
 		Statslog( LDAP_DEBUG_STATS,
 			"%s BIND authcid=\"%s\" authzid=\"%s\"\n",
 			conn->c_sasl_bindop->o_log_prefix,
-			auth_identity, requested_user, 0, 0 );
+			auth_identity, requested_user );
 	}
 
 	Debug( LDAP_DEBUG_TRACE, "SASL Authorize [conn=%ld]: "
 		" proxy authorization allowed authzDN=\"%s\"\n",
 		conn ? (long) conn->c_connid : -1L,
-		authzDN.bv_val ? authzDN.bv_val : "", 0 );
+		authzDN.bv_val ? authzDN.bv_val : "" );
 	return SASL_OK;
 }
 
@@ -1021,7 +1021,7 @@ slapd_rw_config( const char *fname, int lineno, int argc, char **argv )
 	if ( argc != 1 ) {
 		Debug( LDAP_DEBUG_ANY,
 			"[%s:%d] slapd map needs URI\n",
-			fname, lineno, 0 );
+			fname, lineno );
         return NULL;
 	}
 
@@ -1056,7 +1056,7 @@ slapd_rw_config( const char *fname, int lineno, int argc, char **argv )
 		if ( lud->lud_attrs[1] ) {
 			Debug( LDAP_DEBUG_ANY,
 				"[%s:%d] only one attribute allowed in URI\n",
-				fname, lineno, 0 );
+				fname, lineno );
 			goto done;
 		}
 		if ( strcasecmp( lud->lud_attrs[0], "dn" ) &&
@@ -1255,7 +1255,7 @@ int slap_sasl_init( void )
 			rc & 0xffff );
 		Debug( LDAP_DEBUG_ANY, "slap_sasl_init: SASL library version mismatch:"
 			" expected %s, got %s\n",
-			SASL_VERSION_STRING, version, 0 );
+			SASL_VERSION_STRING, version );
 		return -1;
 	}
 #endif
@@ -1270,8 +1270,7 @@ int slap_sasl_init( void )
 
 	rc = sasl_auxprop_add_plugin( "slapd", slap_auxprop_init );
 	if( rc != SASL_OK ) {
-		Debug( LDAP_DEBUG_ANY, "slap_sasl_init: auxprop add plugin failed\n",
-			0, 0, 0 );
+		Debug( LDAP_DEBUG_ANY, "slap_sasl_init: auxprop add plugin failed\n" );
 		return -1;
 	}
 
@@ -1280,8 +1279,7 @@ int slap_sasl_init( void )
 	rc = sasl_server_init( server_callbacks, "slapd" );
 
 	if( rc != SASL_OK ) {
-		Debug( LDAP_DEBUG_ANY, "slap_sasl_init: server init failed\n",
-			0, 0, 0 );
+		Debug( LDAP_DEBUG_ANY, "slap_sasl_init: server init failed\n" );
 
 		return -1;
 	}
@@ -1290,8 +1288,7 @@ int slap_sasl_init( void )
 	lutil_passwd_add( &sasl_pwscheme, chk_sasl, NULL );
 #endif
 
-	Debug( LDAP_DEBUG_TRACE, "slap_sasl_init: initialized!\n",
-		0, 0, 0 );
+	Debug( LDAP_DEBUG_TRACE, "slap_sasl_init: initialized!\n" );
 
 	/* default security properties */
 	memset( &sasl_secprops, '\0', sizeof(sasl_secprops) );
@@ -1374,7 +1371,7 @@ int slap_sasl_open( Connection *conn, int reopen )
 			SLAP_CALLOC( 5, sizeof(sasl_callback_t));
 		if( session_callbacks == NULL ) {
 			Debug( LDAP_DEBUG_ANY,
-				"slap_sasl_open: SLAP_MALLOC failed", 0, 0, 0 );
+				"slap_sasl_open: SLAP_MALLOC failed" );
 			return -1;
 		}
 		conn->c_sasl_extra = session_callbacks;
@@ -1424,7 +1421,7 @@ int slap_sasl_open( Connection *conn, int reopen )
 
 	if( sc != SASL_OK ) {
 		Debug( LDAP_DEBUG_ANY, "sasl_server_new failed: %d\n",
-			sc, 0, 0 );
+			sc );
 
 		return -1;
 	}
@@ -1437,7 +1434,7 @@ int slap_sasl_open( Connection *conn, int reopen )
 
 		if( sc != SASL_OK ) {
 			Debug( LDAP_DEBUG_ANY, "sasl_setprop failed: %d\n",
-				sc, 0, 0 );
+				sc );
 
 			slap_sasl_close( conn );
 			return -1;
@@ -1542,7 +1539,7 @@ char ** slap_sasl_mechs( Connection *conn )
 
 		if( sc != SASL_OK ) {
 			Debug( LDAP_DEBUG_ANY, "slap_sasl_listmech failed: %d\n",
-				sc, 0, 0 );
+				sc );
 
 			return NULL;
 		}
@@ -1720,7 +1717,7 @@ int slap_sasl_bind( Operation *op, SlapReply *rs )
 		send_ldap_result( op, rs );
 	}
 
-	Debug(LDAP_DEBUG_TRACE, "<== slap_sasl_bind: rc=%d\n", rs->sr_err, 0, 0);
+	Debug(LDAP_DEBUG_TRACE, "<== slap_sasl_bind: rc=%d\n", rs->sr_err);
 
 #elif defined(SLAP_BUILTIN_SASL)
 	/* built-in SASL implementation */
@@ -1795,7 +1792,7 @@ slap_sasl_setpass( Operation *op, SlapReply *rs )
 	}
 
 	Debug( LDAP_DEBUG_ARGS, "==> slap_sasl_setpass: \"%s\"\n",
-		id.bv_val ? id.bv_val : "", 0, 0 );
+		id.bv_val ? id.bv_val : "" );
 
 	rs->sr_err = slap_passwd_parse( op->ore_reqdata,
 		NULL, &old, &new, &rs->sr_text );
@@ -1994,7 +1991,7 @@ int slap_sasl_getdn( Connection *conn, Operation *op, struct berval *id,
 
 		Debug( LDAP_DEBUG_TRACE,
 			"slap_sasl_getdn: u:id converted to %s\n",
-			dn->bv_val, 0, 0 );
+			dn->bv_val );
 
 	} else {
 
@@ -2026,7 +2023,7 @@ int slap_sasl_getdn( Connection *conn, Operation *op, struct berval *id,
 		*dn = dn2;
 		Debug( LDAP_DEBUG_TRACE,
 			"slap_sasl_getdn: dn:id converted to %s\n",
-			dn->bv_val, 0, 0 );
+			dn->bv_val );
 	}
 
 	return( LDAP_SUCCESS );
