@@ -2527,6 +2527,8 @@ static int
 mdb_env_sync0(MDB_env *env, unsigned int *flags)
 {
 	int rc = 0, force;
+	if (env->me_flags & MDB_RDONLY)
+		return EACCES;
 	if (env->me_sync_threshold && env->me_sync_pending >= env->me_sync_threshold)
 		*flags |= FORCE;
 	force = *flags & FORCE;
