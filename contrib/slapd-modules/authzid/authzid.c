@@ -328,13 +328,13 @@ authzid_db_init( BackendDB *be, ConfigReply *cr )
 	if ( !SLAP_ISGLOBALOVERLAY( be ) ) {
 		/* do not allow slapo-ppolicy to be global by now (ITS#5858) */
 		if ( cr ) {
-			snprintf( cr->msg, sizeof(cr->msg), 
+			snprintf( cr->msg, sizeof(cr->msg),
 				"slapo-authzid must be global" );
 			Debug( LDAP_DEBUG_ANY, "%s\n", cr->msg, 0, 0 );
 		}
 		return 1;
 	}
-		
+
 	int rc;
 
 	rc = register_supported_control( LDAP_CONTROL_AUTHZID_REQUEST,

@@ -90,16 +90,16 @@ vc_create_response(
 
 		cookie.bv_len = sizeof( conn );
 		cookie.bv_val = (char *)&conn;
-		(void)ber_printf( ber, "tO", 0, LDAP_TAG_EXOP_VERIFY_CREDENTIALS_COOKIE, &cookie ); 
+		(void)ber_printf( ber, "tO", 0, LDAP_TAG_EXOP_VERIFY_CREDENTIALS_COOKIE, &cookie );
 	}
 
 	if ( servercred ) {
-		ber_printf( ber, "tO", LDAP_TAG_EXOP_VERIFY_CREDENTIALS_SCREDS, servercred ); 
+		ber_printf( ber, "tO", LDAP_TAG_EXOP_VERIFY_CREDENTIALS_SCREDS, servercred );
 	}
 
 #if 0
 	if ( authzid ) {
-		ber_printf( ber, "tO", LDAP_TAG_EXOP_VERIFY_CREDENTIALS_AUTHZID, authzid ); 
+		ber_printf( ber, "tO", LDAP_TAG_EXOP_VERIFY_CREDENTIALS_AUTHZID, authzid );
 	}
 #endif
 
@@ -118,7 +118,7 @@ vc_create_response(
 			}
 
 			if ( ctrls[c]->ldctl_value.bv_val != NULL ) {
-				rc = ber_printf( ber, "O", &ctrls[c]->ldctl_value ); 
+				rc = ber_printf( ber, "O", &ctrls[c]->ldctl_value );
 				if( rc == -1 ) goto done;
 			}
 
@@ -256,7 +256,7 @@ vc_exop(
 
 	case LDAP_AUTH_SASL:
 		tag = ber_scanf( ber, "{s" /*}*/ , &mechanism );
-		if ( tag == LBER_ERROR || 
+		if ( tag == LBER_ERROR ||
 			BER_BVISNULL( &mechanism ) || BER_BVISEMPTY( &mechanism ) )
 		{
 			rs->sr_err = LDAP_PROTOCOL_ERROR;

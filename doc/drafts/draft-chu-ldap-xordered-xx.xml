@@ -277,7 +277,7 @@ is provided that is greater than or equal to the number of existing values.</t>
 
 			</t>
 			<t>Note that matching against an ordering-prefix can also
-			be done in Compare operations and Search filters. E.g., 
+			be done in Compare operations and Search filters. E.g.,
 			the filter "(olcSuffix={4})" would match all entries with
 			at least 5 olcSuffix values.</t>
 			</section>

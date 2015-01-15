@@ -305,9 +305,9 @@ main( int argc, char *argv[] )
 	if (argc - optind > 0) {
 		usage();
 	}
-	if (dn 
+	if (dn
 #ifdef LDAP_API_FEATURE_VERIFY_CREDENTIALS_INTERACTIVE
-           && !vc_sasl_mech 
+           && !vc_sasl_mech
 #endif
            && !cred.bv_val)
 	{
@@ -371,7 +371,7 @@ main( int argc, char *argv[] )
 			rc = ldap_verify_credentials_interactive(ld, dn, vc_sasl_mech,
 				vcctrls, NULL, NULL,
 				vc_sasl, lutil_sasl_interact, defaults, context,
-				res, &rmech, &msgid); 
+				res, &rmech, &msgid);
 
 			if (rc != LDAP_SASL_BIND_IN_PROGRESS) break;
 
@@ -402,8 +402,8 @@ main( int argc, char *argv[] )
 	    rc = ldap_verify_credentials( ld,
 		    NULL,
 		    dn, NULL, cred.bv_val ? &cred: NULL, vcctrls,
-		    NULL, NULL, &id ); 
-    
+		    NULL, NULL, &id );
+
 	    if( rc != LDAP_SUCCESS ) {
 			ldap_get_option(ld, LDAP_OPT_DIAGNOSTIC_MESSAGE, (void*) &text);
 		    tool_perror( "ldap_verify_credentials", rc, NULL, NULL, text, NULL );

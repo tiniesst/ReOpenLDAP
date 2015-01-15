@@ -256,7 +256,7 @@ typedef struct ldapinfo_t {
 	 * to be checked for the presence of a certain item */
 	BerVarray		li_bvuri;
 	ldap_pvt_thread_mutex_t	li_uri_mutex;
-	/* hack because when TLS is used we need to lock and let 
+	/* hack because when TLS is used we need to lock and let
 	 * the li_urllist_f function to know it's locked */
 	int			li_uri_mutex_do_not_lock;
 
@@ -381,7 +381,7 @@ typedef struct ldapinfo_t {
 
 	unsigned long		li_conn_nextid;
 
-	/* cached connections; 
+	/* cached connections;
 	 * special conns are in tailq rather than in tree */
 	ldap_avl_info_t		li_conninfo;
 	struct {

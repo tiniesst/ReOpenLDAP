@@ -22,10 +22,10 @@
 echo "running defines.sh"
 . $SRCDIR/scripts/defines.sh
 
-if test $SYNCPROV = syncprovno; then 
+if test $SYNCPROV = syncprovno; then
 	echo "Syncrepl provider overlay not available, test skipped"
 	exit 0
-fi 
+fi
 
 PRODDIR=$TESTDIR/prod
 PRO2DIR=$TESTDIR/pro2
@@ -37,7 +37,7 @@ CFCONS=$CONSDIR/slapd.d
 mkdir -p $TESTDIR
 mkdir -p $PRODDIR $CFPROD $PRODDIR/db $PRODDIR/ou1
 mkdir -p $PRO2DIR $CFPRO2 $PRO2DIR/db
-mkdir -p $CONSDIR $CFCONS $CONSDIR/db 
+mkdir -p $CONSDIR $CFCONS $CONSDIR/db
 
 cd $TESTDIR
 

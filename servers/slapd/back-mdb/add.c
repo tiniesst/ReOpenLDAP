@@ -241,7 +241,7 @@ mdb_add(Operation *op, SlapReply *rs )
 
 				dnRdn( &op->ora_e->e_name, &rdn );
 
-				build_new_dn( &newdn, &p->e_name, &rdn, NULL ); 
+				build_new_dn( &newdn, &p->e_name, &rdn, NULL );
 				if ( op->ora_e->e_name.bv_val != op->o_req_dn.bv_val )
 					ber_memfree( op->ora_e->e_name.bv_val );
 				op->ora_e->e_name = newdn;
@@ -267,7 +267,7 @@ mdb_add(Operation *op, SlapReply *rs )
 		goto return_results;;
 	}
 
-	/* 
+	/*
 	 * Check ACL for attribute write access
 	 */
 	if (!acl_check_modlist(op, oe, op->ora_modlist)) {

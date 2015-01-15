@@ -21,9 +21,9 @@
 ]>
 <?xml-stylesheet type='text/xsl' href='http://xml.resource.org/authoring/rfc2629.xslt' ?>
 <?rfc symrefs="yes" ?>
-<rfc 
+<rfc
   obsoletes="2307"
-  ipr="trust200902" 
+  ipr="trust200902"
   category="info"
   docName="draft-howard-rfc2307bis-02">
   <front>
@@ -62,16 +62,16 @@
     <date month="August" year="2009"/>
     <abstract>
       <t>This document describes a mechanism for mapping
-      entities related to <xref target="UNIX">TCP/IP and the UNIX 
+      entities related to <xref target="UNIX">TCP/IP and the UNIX
       system </xref> into <xref target="X.500"/> entries so
       that they may be resolved with the <xref target="RFC4511">
       Lightweight Directory Access Protocol</xref>. A set of attribute types
       and object classes are proposed, along with specific guidelines for
-      interpreting them.  The intention is to assist the deployment of 
-      LDAP as an organizational nameservice. No proposed solutions are 
-      intended as standards for the Internet. Rather, it is hoped that a 
-      general consensus will emerge as to the appropriate solution to such 
-      problems, leading eventually to the adoption of standards. The 
+      interpreting them.  The intention is to assist the deployment of
+      LDAP as an organizational nameservice. No proposed solutions are
+      intended as standards for the Internet. Rather, it is hoped that a
+      general consensus will emerge as to the appropriate solution to such
+      problems, leading eventually to the adoption of standards. The
       proposed mechanism has already been implemented with some success.
 </t>
     </abstract>
@@ -81,20 +81,20 @@
     <section anchor="background" title="Background and Motivation">
       <t>The UNIX (R) operating system, and its derivatives (specifically,
       those which support TCP/IP and conform to the <xref target="UNIX">
-      X/Open Single UNIX specification</xref>) require a means of looking up 
-      entities, by matching them against search criteria or by enumeration. 
+      X/Open Single UNIX specification</xref>) require a means of looking up
+      entities, by matching them against search criteria or by enumeration.
       (Other operating systems that support TCP/IP may provide some means of
-      resolving some of these entities. This schema is applicable to those 
+      resolving some of these entities. This schema is applicable to those
       environments also.)</t>
       <t>These entities include users, groups, IP services (which map names
       to IP ports and protocols, and vice versa), IP protocols (which map
       names to IP protocol numbers and vice versa), RPCs (which map names
       to <xref target="RFC1057">ONC Remote Procedure Call</xref>
-      numbers and vice versa), NIS netgroups, booting information (boot 
-      parameters and MAC address mappings), filesystem mounts, IP hosts 
-      and networks.</t> 
+      numbers and vice versa), NIS netgroups, booting information (boot
+      parameters and MAC address mappings), filesystem mounts, IP hosts
+      and networks.</t>
       <t>Resolution requests are made through a set of C functions, provided
-      in the UNIX system's C library. For example, the UNIX system utility 
+      in the UNIX system's C library. For example, the UNIX system utility
       "ls", which enumerates the contents of a filesystem directory,
       uses the C library function getpwuid() in order to map user IDs to
       login names. Once the request is made, it is resolved using a
@@ -106,7 +106,7 @@
       resolving hosts, services and networks.) Both these nameservices
       have the advantage of being distributed and thus permitting a common
       set of entities to be shared amongst many clients.</t>
-      <t>LDAP is a distributed, hierarchical directory service access 
+      <t>LDAP is a distributed, hierarchical directory service access
       protocol which is used to access repositories of users and other
       network-related entities. Because LDAP is often not tightly integrated
       with the host operating system, information such as users may need
@@ -159,7 +159,7 @@
         hosts, and networks, and the term "UNIX entity" to its complement.
         (The former category does not mandate the host operating system
         supporting the interfaces required for resolving UNIX entities.)</t>
-        <t>The OIDs defined below are derived from iso(1) org(3) dod(6) 
+        <t>The OIDs defined below are derived from iso(1) org(3) dod(6)
         internet(1) directory(1) nisSchema(1)</t>
       </section>
 	  <section title="Schema">
@@ -204,7 +204,7 @@
               automountInformation<vspace blankLines="0"/>
             </t>
           </list>
-          Additionally, some of the attributes defined in 
+          Additionally, some of the attributes defined in
           <xref target="RFC4519"/> and
           <xref target="RFC3112"/> are required.
         </t>
@@ -260,14 +260,14 @@
               automount<vspace blankLines="0"/>
             </t>
           </list>
-          Additionally, some of the attributes defined in 
+          Additionally, some of the attributes defined in
           <xref target="RFC4519"/> are required.
         </t>
       </section>
 	 </section>
     </section>
     <section anchor="attrdefs" title="Attribute Definitions">
-      <t>This section contains attribute definitions to be implemented 
+      <t>This section contains attribute definitions to be implemented
       by DUAs supporting this schema:
       <figure title="">
         <artwork>
@@ -658,7 +658,7 @@
       <figure>
         <artwork>
   ( 1.3.6.1.1.1.2.8 NAME 'nisNetgroup' SUP top STRUCTURAL
-      DESC 'Abstraction of a netgroup. May refer to other 
+      DESC 'Abstraction of a netgroup. May refer to other
             netgroups'
       MUST cn
       MAY ( nisNetgroupTriple $ memberNisNetgroup $ description ) )
@@ -736,7 +736,7 @@
       </figure></t>
     </section>
     <section anchor="impl" title="Implementation Details">
-      <section anchor="impl.res_methods" 
+      <section anchor="impl.res_methods"
         title="Suggested Resolution Methods">
         <t>The preferred means of directing a client application (one using
         the shared services of the C library) to use LDAP as its information
@@ -755,7 +755,7 @@
 		The means in which the DUA locates LDAP servers is also
 		implementation dependent.</t>
       </section>
-      <section anchor="impl.interp_user_group" 
+      <section anchor="impl.interp_user_group"
         title="Interpreting User and Group Entries">
         <t>User and group resolution is initiated by the functions prefixed
         by getpw and getgr respectively. The uid attribute contains the
@@ -775,7 +775,7 @@
         for posixAccount and posixGroup entries, respectively. Group members
         may either be login names (values of memberUid) or distinguished
         names (values of member). In the latter case, the distinguished
-        name must be mapped to one or more login names by examining the 
+        name must be mapped to one or more login names by examining the
         name's RDN or, if it is not distinguished by uid, performing a base
         search on the DN with a filter of "(objectclass=*)". DUAs MAY wish
         to cache DN to login name mappings. The DUA MAY traverse nested
@@ -829,7 +829,7 @@
         the attribute until a value matching the above syntax is found.
         Only if hashedpassword is an empty string does the user have no
         password.  DUAs are not required to consider hashing schemes
-        which the client will not recognize; in most cases, it may be 
+        which the client will not recognize; in most cases, it may be
         sufficient to consider only "crypt".</t>
         <t>DUA MAY use the authPassword attribute instead of userPassword,
         defined in <xref target="RFC3112"/>.  The DUA MUST iterate the values of the
@@ -895,7 +895,7 @@
 	   from other naming services into LDAP.</t>
 	   </section>
       </section>
-      <section anchor="impl.interp_host_net" 
+      <section anchor="impl.interp_host_net"
         title="Interpreting Hosts and Networks">
         <t>The ipHostNumber and ipNetworkNumber attributes are defined in
         preference to dNSRecord (defined in <xref target="RFC1279"/>), in order to simplify
@@ -912,7 +912,7 @@
         <t>This document redefines, although not exclusively, the ipNetwork
         class defined in <xref target="RFC1279"/>, in
         order to achieve consistent naming with ipHost. The ipNetworkNumber
-        attribute is also used in the <xref target="ROSE">siteContact 
+        attribute is also used in the <xref target="ROSE">siteContact
         object class</xref>.</t>
         <t>The authPassword and userPassword attributes are included in
         ipHost such that hosts MAY be treated as authentication principals.
@@ -921,13 +921,13 @@
         <t>The trailing zeros in a network address MUST be omitted.
         CIDR-style network addresses (eg. 192.168.1/24) MAY be used. Leading
         zeros MUST be removed from all components of an IPv6 address string
-        as defined by <xref target="RFC2373"/>, section 2.2, 
+        as defined by <xref target="RFC2373"/>, section 2.2,
         item 1.  The IPv6 address string MUST be further normalized
-        by following the "::" syntax as defined in 
+        by following the "::" syntax as defined in
         <xref target="RFC2373"/>, section 2.2, item 2.
         In addition, "::" MUST be used to replace the longest string of zero
         bits.  If there are two or more longest strings of zero bits, then
-        the first string MUST be replaced. In addition, the syntax defined 
+        the first string MUST be replaced. In addition, the syntax defined
         by <xref target="RFC2373"/>, section 2.2, item 3
         MUST NOT be used.  IPv4 addresses MUST be represented by the IPv4
         dotted decimal string syntax.</t>
@@ -950,7 +950,7 @@
           </artwork>
         </figure></t>
       </section>
-      <section anchor="impl.interp_other" 
+      <section anchor="impl.interp_other"
         title="Interpreting Other Entities">
         <t>In general, a one-to-one mapping between entities and LDAP entries
         is proposed, in that each entity has exactly one representation in
@@ -977,8 +977,8 @@
           </artwork>
         </figure>
         While the above two entities may be represented as separate LDAP
-        entities, with different distinguished names (such as 
-        cn=domain+ipServiceProtocol=tcp, ... and 
+        entities, with different distinguished names (such as
+        cn=domain+ipServiceProtocol=tcp, ... and
         cn=domain+ipServiceProtocol=udp, ...) it is convenient to represent
         them as a single entry. If a service is represented in multiple
         protocol domains with different ports, then multiple entries are
@@ -991,7 +991,7 @@
         <t>The nisDomainObject object class is provided to associate a NIS
         domain with a naming context. A DUA would retrieve the NIS domain
         name from a configuration file and enumerate the naming contexts
-        served by an LDAP server, searching each naming context for 
+        served by an LDAP server, searching each naming context for
         (nisDomain=%s).  The first matching entry that is found MAY be used
         as a search base for configuration profile information or for entries
         themselves. For example, the following example shows an association
@@ -1007,22 +1007,22 @@
     nisDomain: nis.aja.com
           </artwork>
         </figure>
-        The nisObject object class MAY be used as a generic means of 
+        The nisObject object class MAY be used as a generic means of
         representing NIS entities. Its use is not encouraged; where support
         for entities not described in this schema is desired, an appropriate
-        schema should be devised. Implementers are strongly advised to 
+        schema should be devised. Implementers are strongly advised to
         support end-user extensible mappings between NIS entities and object
         classes. (Where the nisObject class is used, the nisMapName
         attribute MAY be used as a RDN.) The nisObject class might be used
         to represent automount information.</t>
       </section>
-      <section anchor="impl.canon_entries" 
+      <section anchor="impl.canon_entries"
         title="Canonicalizing entries with multi-valued naming attributes">
         <t>For entities such as hosts, services, networks, protocols, and
         RPCs, where there may be one or more aliases, the respective entry's
         relative distinguished name SHOULD be used to determine the canonical
         name.  Any other values for the same attribute are used as aliases.
-        For example, the service described in 
+        For example, the service described in
         <xref target="impl.interp_other" /> has the canonical name "domain"
         and exactly one alias, "nameserver".</t>
         <t>The schema in this document generally only defines one attribute
@@ -1036,7 +1036,7 @@
         <t>In the event that a different attribute is used to distinguish the
         entry, as may be the case where these object classes are used as
         auxiliary classes, the entry's canonical name may not be present in
-        the RDN. In this case, the DUA MUST choose one of the 
+        the RDN. In this case, the DUA MUST choose one of the
         non-distinguished values to represent the entity's canonical name. As
         the directory server guarantees no ordering of attribute values, it
         may not be possible to distinguish an entry deterministically. This
@@ -1062,7 +1062,7 @@
       available to non-privileged users is dangerous because it exposes
       them to dictionary and brute-force attacks.  This is proposed only
       for compatibility with existing UNIX system implementations. Sites
-      where security is critical SHOULD consider using a strong 
+      where security is critical SHOULD consider using a strong
       authentication service for user authentication.</t>
       <t>Alternatively, the encrypted password could be made available only
       to a subset of privileged DUAs, which would provide "shadow" password
@@ -1084,10 +1084,10 @@
       an organization, while conceivably part of the DIT, should not be
       considered with the same degree of authority as those within the
       organization.)</t>
-      <t>Finally, care should be exercised with integer attributes of a 
+      <t>Finally, care should be exercised with integer attributes of a
       sensitive nature (particularly the uidNumber and gidNumber attributes)
       which contain zero-length values. DUAs MAY treat such values as
-      corresponding to the "nobody" or "nogroup" user and group, 
+      corresponding to the "nobody" or "nogroup" user and group,
       respectively.</t>
     </section>
     <section anchor="acks" title="Acknowledgements">
@@ -1135,7 +1135,7 @@
           </author>
           <date month="" year="1988"/>
         </front>
-      </reference>  
+      </reference>
       <reference anchor="UNIX">
         <front>
           <title>
@@ -1273,41 +1273,41 @@
     getpwent()         (objectClass=posixAccount)
     getspnam()         (&amp;(objectClass=shadowAccount)(uid=%s))
     getspent()         (objectClass=shadowAccount)
-    
+
     getgrnam()         (&amp;(objectClass=posixGroup)(cn=%s))
     getgrgid()         (&amp;(objectClass=posixGroup)(gidNumber=%d))
     getgrent()         (objectClass=posixGroup)
-    
+
     getservbyname()    (&amp;(objectClass=ipService)(cn=%s)
                         (ipServiceProtocol=%s))
     getservbyport()    (&amp;(objectClass=ipService)(ipServicePort=%d)
                          (ipServiceProtocol=%s))
     getservent()       (objectClass=ipService)
-    
+
     getrpcbyname()     (&amp;(objectClass=oncRpc)(cn=%s))
     getrpcbynumber()   (&amp;(objectClass=oncRpc)(oncRpcNumber=%d))
     getrpcent()        (objectClass=oncRpc)
-    
+
     getprotobyname()   (&amp;(objectClass=ipProtocol)(cn=%s))
     getprotobynumber() (&amp;(objectClass=ipProtocol)
                           (ipProtocolNumber=%d))
     getprotoent()      (objectClass=ipProtocol)
-    
+
     gethostbyname()    (&amp;(objectClass=ipHost)(cn=%s))
     gethostbyaddr()    (&amp;(objectClass=ipHost)(ipHostNumber=%s))
     gethostent()       (objectClass=ipHost)
-    
+
     getnetbyname()     (&amp;(objectClass=ipNetwork)(cn=%s))
     getnetbyaddr()     (&amp;(objectClass=ipNetwork)(ipNetworkNumber=%s))
     getnetent()        (objectClass=ipNetwork)
-    
+
     setnetgrent()      (&amp;(objectClass=nisNetgroup)(cn=%s))
     getpublickey()     (&amp;(objectClass=nisKeyObject)(...))
         </artwork>
       </figure></t>
     </section>
     <section anchor="appendixc" title="Suggested DIT structure">
-      <t>The cn attribute is typically used to name entities. The 
+      <t>The cn attribute is typically used to name entities. The
       ipHostNumber, ipNetworkNumber, and ipServiceProtocol attributes are also
       naming attributes, such that multi-valued RDNs may be used to
       distinguish between, for example, different interfaces of a multihomed

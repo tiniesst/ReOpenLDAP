@@ -129,7 +129,7 @@ main( int argc, char **argv )
 					usage( argv[0] );
 				}
 				break;
-				
+
 			default:
 				usage( argv[0] );
 				break;
@@ -172,7 +172,7 @@ my_task( void *my_num )
 	{
 		int version = LDAP_VERSION3;
 		(void) ldap_set_option( ld, LDAP_OPT_PROTOCOL_VERSION,
-			&version ); 
+			&version );
 	}
 	(void) ldap_set_option( ld, LDAP_OPT_REFERRALS, LDAP_OPT_OFF );
 
@@ -185,7 +185,7 @@ my_task( void *my_num )
 	{
 		int version = LDAP_VERSION3;
 		(void) ldap_set_option( sld, LDAP_OPT_PROTOCOL_VERSION,
-			&version ); 
+			&version );
 	}
 	(void) ldap_set_option( sld, LDAP_OPT_REFERRALS, LDAP_OPT_OFF );
 	if ( binder ) {
@@ -200,7 +200,7 @@ my_task( void *my_num )
 	for (;;) {
 		char dn[BUFSIZ], *ptr, fstr[256];
 		int j, isr1;
-		
+
 		if ( finish )
 			break;
 
@@ -321,7 +321,7 @@ do_time( )
 		if ( i > 1 ) {
 			rr1 = dr10 / dt;
 			rr2 = dr20 / dt;
-			
+
 			printf("%s(sum)\t%d\t%d\t%d\t%d\t%d\t%d\n",
 				hname, 0, dr10, dr20, rr1, rr2, rr1 + rr2);
 		}

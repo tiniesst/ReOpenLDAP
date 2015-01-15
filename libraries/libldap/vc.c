@@ -338,7 +338,7 @@ ldap_verify_credentials_interactive (
 	LDAP_SASL_INTERACT_PROC *proc,
 	void *defaults,
     void *context;
-	
+
 	/* as obtained from ldap_result() */
 	LDAPMessage *result,
 

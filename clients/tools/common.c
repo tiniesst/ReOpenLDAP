@@ -181,7 +181,7 @@ static struct tool_ctrls_t {
 };
 
 /* "features" */
-enum { Intr_None = 0, Intr_Abandon, Intr_Cancel, Intr_Ignore }; 
+enum { Intr_None = 0, Intr_Abandon, Intr_Cancel, Intr_Ignore };
 static volatile sig_atomic_t	gotintr, abcan;
 
 
@@ -216,7 +216,7 @@ st_value( LDAP *ld, struct berval *value )
 	} else if ( sasl_authc_id != NULL ) {
 		ber_str2bv( sasl_authc_id, 0, 0, &id );
 
-	} else 
+	} else
 #endif /* HAVE_CYRUS_SASL */
 	if ( binddn != NULL ) {
 		ber_str2bv( binddn, 0, 0, &id );
@@ -670,7 +670,7 @@ tool_args( int argc, char **argv )
 							exit( EXIT_FAILURE );
 						}
 					}
-	
+
 					if ( strcasecmp( cvalue, "chainingPreferred" ) == 0 ) {
 						chainingResolve = LDAP_CHAINING_PREFERRED;
 					} else if ( strcasecmp( cvalue, "chainingRequired" ) == 0 ) {
@@ -782,7 +782,7 @@ tool_args( int argc, char **argv )
 				usage();
 			}
 			if ( control ) {
-				ber_memfree( control );	 
+				ber_memfree( control );
 				control = NULL;
 			}
 			break;
@@ -1292,7 +1292,7 @@ tool_conn_setup( int dont, void (*private_setup)( LDAP * ) )
 							lud->lud_dn );
 						goto dnssrv_free;
 					}
-					
+
 					rc = ldap_domain2hostlist( domain, &hostlist );
 					if ( rc ) {
 						fprintf( stderr,
@@ -1634,7 +1634,7 @@ tool_bind( LDAP *ld )
 		LDAPControl *ctrl;
 		int expire, grace, len = 0;
 		LDAPPasswordPolicyError pErr = -1;
-		
+
 		ctrl = ldap_control_find( LDAP_CONTROL_PASSWORDPOLICYRESPONSE,
 			ctrls, NULL );
 
@@ -1662,7 +1662,7 @@ tool_bind( LDAP *ld )
 
 	if ( ctrls && bauthzid ) {
 		LDAPControl *ctrl;
-		
+
 		ctrl = ldap_control_find( LDAP_CONTROL_AUTHZID_RESPONSE,
 			ctrls, NULL );
 		if ( ctrl ) {
@@ -1787,7 +1787,7 @@ tool_server_controls( LDAP *ld, LDAPControl *extra_c, int count )
 	if ( proxydn ) {
 		BerElementBuffer berbuf;
 		BerElement *ber = (BerElement *)&berbuf;
-		
+
 		ber_init2( ber, NULL, LBER_USE_DER );
 
 		if ( ber_printf( ber, "s", proxydn ) == -1 ) {
@@ -2051,7 +2051,7 @@ print_prepostread( LDAP *ld, LDAPControl *ctrl, struct berval *what)
 				ptr = lutil_strncopy( ptr, bv.bv_val, bv.bv_len );
 				ptr = lutil_strcopy( ptr, ": " );
 			}
-		
+
 			for ( i = 0; vals[ i ].bv_val != NULL; i++ ) {
 				tool_write_ldif(
 					ldif ? LDIF_PUT_COMMENT : LDIF_PUT_VALUE,
@@ -2265,7 +2265,7 @@ print_deref( LDAP *ld, LDAPControl *ctrl )
 							ptr, buf + len - ptr );
 						assert( k >= 0 );
 						ptr += k;
-						
+
 					} else {
 						ptr = lutil_memcopy( ptr, dv->vals[ j ].bv_val, dv->vals[ j ].bv_len );
 					}

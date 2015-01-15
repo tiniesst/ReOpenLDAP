@@ -500,7 +500,7 @@ domodify(
 								op == LDAP_MOD_DELETE ?  _("delete") :
 									_("unknown"),
 					pmods[ i ]->mod_type );
-	
+
 				if ( pmods[ i ]->mod_bvalues != NULL ) {
 					for ( j = 0; pmods[ i ]->mod_bvalues[ j ] != NULL; ++j ) {
 						bvp = pmods[ i ]->mod_bvalues[ j ];

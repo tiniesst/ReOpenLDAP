@@ -153,7 +153,7 @@ ldap_parse_ldif_record_x(
 			lr->lr_freeval[i] = 0;
 			continue;
 		}
-	
+
 		if ( ( rc = ldif_parse_line2( line, lr->lr_btype+i, lr->lr_vals+i, &freev ) ) < 0 ) {
 			fprintf( stderr, _("%s: invalid format (line %lu) entry: \"%s\"\n"),
 				errstr, linenum+i, dn == NULL ? "" : dn );
@@ -225,7 +225,7 @@ short_input:
 			fprintf( stderr,
 				_("%s: Expecting more input after %s line, line %lu\n"),
 				errstr, lr->lr_btype[i-1].bv_val, linenum+i );
-			
+
 			rc = LDAP_PARAM_ERROR;
 			goto leave;
 		}
@@ -431,7 +431,7 @@ short_input:
 		    for ( icnt = lr->lr_vals[i].bv_len; --icnt > 0; ) {
 				if ( !isspace( (unsigned char) lr->lr_vals[i].bv_val[icnt] ) ) break;
 			}
-    
+
 			if ( ++icnt != lr->lr_vals[i].bv_len ) {
 				fprintf( stderr, _("%s: illegal trailing space after"
 					" \"%s: %s\" trimmed (line %lu, entry \"%s\")\n"),
@@ -577,7 +577,7 @@ ldap_parse_ldif_record(
       control:  oid  [true/false]  [:: base64-value]      or
       control:  oid  [true/false]  [:< url]
    The control is added to the list of controls in *ppctrls.
-*/      
+*/
 static int
 parse_ldif_control(
 	struct berval *bval,
@@ -600,7 +600,7 @@ parse_ldif_control(
 	while (isdigit((unsigned char)*s) || *s == '.') {
 		s++;                           /* OID should be digits or . */
 	}
-	if (s == oidStart) { 
+	if (s == oidStart) {
 		return ( LDAP_PARAM_ERROR );   /* OID was not present */
 	}
 	if (*s) {                          /* End of OID should be space or NULL */
@@ -620,7 +620,7 @@ parse_ldif_control(
 	if (strncasecmp(s, "true", 4) == 0) {
 		criticality = 1;
 		s += 4;
-	} 
+	}
 	else if (strncasecmp(s, "false", 5) == 0) {
 		criticality = 0;
 		s += 5;

@@ -144,7 +144,7 @@ ldap_int_tls_destroy( struct ldapoptions *lo )
 void
 ldap_pvt_tls_destroy( void )
 {
-	struct ldapoptions *lo = LDAP_INT_GLOBAL_OPT();   
+	struct ldapoptions *lo = LDAP_INT_GLOBAL_OPT();
 
 	ldap_int_tls_destroy( lo );
 
@@ -274,7 +274,7 @@ error_exit:
 int
 ldap_pvt_tls_init_def_ctx( int is_server )
 {
-	struct ldapoptions *lo = LDAP_INT_GLOBAL_OPT();   
+	struct ldapoptions *lo = LDAP_INT_GLOBAL_OPT();
 	int rc;
 	LDAP_MUTEX_LOCK( &tls_def_ctx_mutex );
 	rc = ldap_int_tls_init_ctx( lo, is_server );
@@ -291,7 +291,7 @@ alloc_handle( void *ctx_arg, int is_server )
 	if ( ctx_arg ) {
 		ctx = ctx_arg;
 	} else {
-		struct ldapoptions *lo = LDAP_INT_GLOBAL_OPT();   
+		struct ldapoptions *lo = LDAP_INT_GLOBAL_OPT();
 		if ( ldap_pvt_tls_init_def_ctx( is_server ) < 0 ) return NULL;
 		ctx = lo->ldo_tls_ctx;
 	}
@@ -352,7 +352,7 @@ ldap_int_tls_connect( LDAP *ld, LDAPConn *conn )
 		ber_sockbuf_add_io( sb, tls_imp->ti_sbio,
 			LBER_SBIOD_LEVEL_TRANSPORT, (void *)ssl );
 
-		lo = LDAP_INT_GLOBAL_OPT();   
+		lo = LDAP_INT_GLOBAL_OPT();
 		if( ctx == NULL ) {
 			ctx = lo->ldo_tls_ctx;
 			ld->ld_options.ldo_tls_ctx = ctx;
@@ -492,7 +492,7 @@ ldap_pvt_tls_get_peer_dn( void *s, struct berval *dn,
 	rc = tls_imp->ti_session_peer_dn( session, &bvdn );
 	if ( rc ) return rc;
 
-	rc = ldap_X509dn2bv( &bvdn, dn, 
+	rc = ldap_X509dn2bv( &bvdn, dn,
 			    (LDAPDN_rewrite_func *)func, flags);
 	return rc;
 }
@@ -605,7 +605,7 @@ ldap_pvt_tls_get_option( LDAP *ld, int option, void *arg )
 
 	} else {
 		/* Get pointer to global option structure */
-		lo = LDAP_INT_GLOBAL_OPT();   
+		lo = LDAP_INT_GLOBAL_OPT();
 		if ( lo == NULL ) {
 			return LDAP_NO_MEMORY;
 		}
@@ -755,7 +755,7 @@ ldap_pvt_tls_set_option( LDAP *ld, int option, void *arg )
 
 	} else {
 		/* Get pointer to global option structure */
-		lo = LDAP_INT_GLOBAL_OPT();   
+		lo = LDAP_INT_GLOBAL_OPT();
 		if ( lo == NULL ) {
 			return LDAP_NO_MEMORY;
 		}
@@ -1000,7 +1000,7 @@ ldap_int_tls_start ( LDAP *ld, LDAPConn *conn, LDAPURLDesc *srv )
 	ssl = ldap_pvt_tls_sb_ctx( sb );
 	assert( ssl != NULL );
 
-	/* 
+	/*
 	 * compare host with name(s) in certificate
 	 */
 	if (ld->ld_options.ldo_tls_require_cert != LDAP_OPT_X_TLS_NEVER &&
@@ -1018,7 +1018,7 @@ void *
 ldap_pvt_tls_sb_ctx( Sockbuf *sb )
 {
 	void			*p = NULL;
-	
+
 	ber_sockbuf_ctrl( sb, LBER_SB_OPT_GET_SSL, (void *)&p );
 	return p;
 }
@@ -1312,7 +1312,7 @@ ldap_X509dn2bv( void *x509_name, struct berval *bv, LDAPDN_rewrite_func *func,
 		}
 	}
 
-	/* Allocate the DN/RDN/AVA stuff as a single block */    
+	/* Allocate the DN/RDN/AVA stuff as a single block */
 	dnsize = sizeof(LDAPRDN) * (nrdns+1);
 	dnsize += sizeof(LDAPAVA *) * (navas+nrdns);
 	dnsize += sizeof(LDAPAVA) * navas;
@@ -1323,7 +1323,7 @@ ldap_X509dn2bv( void *x509_name, struct berval *bv, LDAPDN_rewrite_func *func,
 	} else {
 		newDN = (LDAPDN)(char *)ptrs;
 	}
-	
+
 	newDN[nrdns] = NULL;
 	newRDN = (LDAPRDN)(newDN + nrdns+1);
 	newAVA = (LDAPAVA *)(newRDN + navas + nrdns);
@@ -1437,7 +1437,7 @@ allocd:
 		*newRDN++ = NULL;
 		tag = ber_next_element( ber, &len, dn_end );
 	}
-		
+
 	if ( func ) {
 		rc = func( newDN, flags, NULL );
 		if ( rc != LDAP_SUCCESS )

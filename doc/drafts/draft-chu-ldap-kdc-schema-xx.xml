@@ -19,8 +19,8 @@
 ]>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <?rfc symrefs="yes" ?>
-<rfc 
-  ipr="trust200902" 
+<rfc
+  ipr="trust200902"
   category="info"
   docName="draft-chu-ldap-kdc-schema-01">
   <front>
@@ -126,7 +126,7 @@
 		krbLDAPURI<vspace blankLines="0"/>
             </t>
           </list>
-          Additionally, some of the attributes defined in 
+          Additionally, some of the attributes defined in
           <xref target="I-D.behera-ldap-password-policy">LDAP Password Policy
 	</xref> are required.
         </t>
@@ -148,7 +148,7 @@
 	 </section>
     </section>
     <section anchor="attrdefs" title="Attribute Definitions">
-      <t>This section contains attribute definitions to be implemented 
+      <t>This section contains attribute definitions to be implemented
       by KDCs supporting this schema:
       <figure title="">
         <artwork>

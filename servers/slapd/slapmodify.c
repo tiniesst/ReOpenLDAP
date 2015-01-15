@@ -111,7 +111,7 @@ slapmodify( int argc, char **argv )
 
 	(void)slap_tool_update_ctxcsn_init();
 
-	if ( enable_meter 
+	if ( enable_meter
 #ifdef LDAP_DEBUG
 		/* tools default to "none" */
 		&& slap_debug == LDAP_DEBUG_NONE
@@ -223,7 +223,7 @@ slapmodify( int argc, char **argv )
 				}
 
 				assert( bdtmp != NULL );
-				
+
 				fprintf( stderr, "; did you mean to use database #%d (%s)?",
 					dbidx,
 					bd->be_suffix[0].bv_val );
@@ -252,7 +252,7 @@ slapmodify( int argc, char **argv )
 				}
 
 				assert( bdtmp != NULL );
-				
+
 				fprintf( stderr, "; did you mean to use database #%d (%s)?",
 					dbidx,
 					bd->be_suffix[0].bv_val );
