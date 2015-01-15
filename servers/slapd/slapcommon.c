@@ -441,6 +441,7 @@ slap_tool_init(
 			}
 
 			if ( ludp->lud_dn != NULL && ludp->lud_dn[0] != '\0' ) {
+				ch_free( subtree );
 				subtree = ludp->lud_dn;
 				ludp->lud_dn = NULL;
 			}
@@ -527,6 +528,7 @@ slap_tool_init(
 			case SLAPCAT:
 			case SLAPSCHEMA:
 				/* dump subtree */
+				ch_free( subtree );
 				subtree = ch_strdup( optarg );
 				break;
 			}
