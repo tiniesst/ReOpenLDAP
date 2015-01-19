@@ -239,7 +239,8 @@ ldap_pvt_thread_pool_init_q (
 	pool = (ldap_pvt_thread_pool_t) LDAP_CALLOC(1,
 		sizeof(struct ldap_int_thread_pool_s));
 
-	if (pool == NULL) return(-1);
+	if (pool == NULL)
+		return -1;
 
 	pool->ltp_wqs = LDAP_MALLOC(numqs * sizeof(struct ldap_int_thread_poolq_s *));
 	if (pool->ltp_wqs == NULL) {
@@ -266,22 +267,16 @@ ldap_pvt_thread_pool_init_q (
 		max_threads = LDAP_MAXTHR;
 
 	rc = ldap_pvt_thread_mutex_init(&pool->ltp_mutex);
-	if (rc != 0) {
-fail:
-		for (i=0; i<numqs; i++)
-			LDAP_FREE(pool->ltp_wqs[i]->ltp_free);
-		LDAP_FREE(pool->ltp_wqs);
-		LDAP_FREE(pool);
-		return(rc);
-	}
+	if (rc != 0)
+		goto cleanup1;
 
 	rc = ldap_pvt_thread_cond_init(&pool->ltp_cond);
 	if (rc != 0)
-		goto fail;
+		goto cleanup2;
 
 	rc = ldap_pvt_thread_cond_init(&pool->ltp_pcond);
 	if (rc != 0)
-		goto fail;
+		goto cleanup3;
 
 	rem_thr = max_threads % numqs;
 	rem_pend = max_pending % numqs;
@@ -290,10 +285,10 @@ fail:
 		pq->ltp_pool = pool;
 		rc = ldap_pvt_thread_mutex_init(&pq->ltp_mutex);
 		if (rc != 0)
-			return(rc);
+			goto cleanup4;
 		rc = ldap_pvt_thread_cond_init(&pq->ltp_cond);
 		if (rc != 0)
-			return(rc);
+			goto cleanup5;
 		LDAP_STAILQ_INIT(&pq->ltp_pending_list);
 		pq->ltp_work_list = &pq->ltp_pending_list;
 		LDAP_SLIST_INIT(&pq->ltp_free_list);
@@ -310,8 +305,6 @@ fail:
 		}
 	}
 
-	ldap_int_has_thread_pool = 1;
-
 	pool->ltp_max_count = max_threads;
 	pool->ltp_max_pending = max_pending;
 
@@ -327,7 +320,27 @@ fail:
 	 */
 
 	*tpool = pool;
-	return(0);
+	ldap_int_has_thread_pool = 1;
+	return 0;
+
+	while ( --i >= 0 ) {
+		pq = pool->ltp_wqs[i];
+		ldap_pvt_thread_cond_destroy(&pq->ltp_cond);
+cleanup5:
+		ldap_pvt_thread_mutex_destroy(&pq->ltp_mutex);
+cleanup4: ;
+	}
+
+cleanup3:
+	ldap_pvt_thread_cond_destroy(&pool->ltp_cond);
+cleanup2:
+	ldap_pvt_thread_mutex_destroy(&pool->ltp_mutex);
+cleanup1:
+	for (i=0; i<numqs; i++)
+		LDAP_FREE(pool->ltp_wqs[i]->ltp_free);
+	LDAP_FREE(pool->ltp_wqs);
+	LDAP_FREE(pool);
+	return rc;
 }
 
 int
