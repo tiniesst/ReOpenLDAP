@@ -1129,8 +1129,8 @@ static int
 meta_back_cf_gen( ConfigArgs *c )
 {
 	metainfo_t	*mi = ( metainfo_t * )c->be->be_private;
-	metatarget_t	*mt;
-	metacommon_t	*mc;
+	metatarget_t	*mt = NULL;
+	metacommon_t	*mc = NULL;
 
 	int i, rc = 0;
 
@@ -1430,7 +1430,6 @@ meta_back_cf_gen( ConfigArgs *c )
 
 		case LDAP_BACK_CFG_IDASSERT_AUTHZFROM: {
 			BerVarray	*bvp;
-			int		i;
 			struct berval	bv = BER_BVNULL;
 			char		buf[SLAP_TEXT_BUFLEN];
 
@@ -1464,7 +1463,6 @@ meta_back_cf_gen( ConfigArgs *c )
 		}
 
 		case LDAP_BACK_CFG_IDASSERT_BIND: {
-			int		i;
 			struct berval	bc = BER_BVNULL;
 			char		*ptr;
 
@@ -2647,6 +2645,7 @@ idassert-authzFrom	"dn:<rootdn>"
 				/* count */ ;
 		}
 
+		i = 0;
 		if ( ix >= cnt || ix < 0 ) {
 			ix = cnt;
 		} else {
@@ -2750,6 +2749,7 @@ idassert-authzFrom	"dn:<rootdn>"
 				/* count */ ;
 		}
 
+		i = 0;
 		if ( ix >= cnt || ix < 0 ) {
 			ix = cnt;
 		} else {
