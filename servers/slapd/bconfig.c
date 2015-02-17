@@ -7827,7 +7827,7 @@ config_back_initialize( BackendInfo *bi )
 	int			i;
 	AttributeDescription	*ad = NULL;
 	const char		*text;
-	static char		*controls[] = {
+	static const char * const controls[] = {
 		LDAP_CONTROL_MANAGEDSAIT,
 		NULL
 	};

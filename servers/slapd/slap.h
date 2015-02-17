@@ -2366,7 +2366,7 @@ struct BackendInfo {
 #define SLAPO_GLOBONLY(be)	(SLAP_BFLAGS(be) & SLAPO_BFLAG_GLOBONLY)
 #define SLAPO_DISABLED(be)	(SLAP_BFLAGS(be) & SLAPO_BFLAG_DISABLED)
 
-	char	**bi_controls;		/* supported controls */
+	const char* const *bi_controls;		/* supported controls */
 	char	bi_ctrls[SLAP_MAX_CIDS + 1];
 
 	unsigned int bi_nDB;	/* number of databases of this type */

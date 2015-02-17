@@ -4994,7 +4994,7 @@ parse_privdb_ctrl(
 	return LDAP_SUCCESS;
 }
 
-static char *extops[] = {
+static const char * const extops[] = {
 	LDAP_EXOP_MODIFY_PASSWD,
 	NULL
 };
