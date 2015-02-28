@@ -2935,6 +2935,8 @@ struct Connection {
 
 	char		c_sasl_bind_in_progress;	/* multi-op bind in progress */
 	char		c_writewaiter;	/* true if blocked on write */
+	char		c_gentle_kick;	/* connection is internal (e.g. syncrepl)
+								 * and should be kicked/closed on gentle-shutdown. */
 
 
 #define	CONN_IS_TLS	1

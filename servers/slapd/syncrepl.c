@@ -603,6 +603,11 @@ check_syncprov(
 	return changed;
 }
 
+static int syncrep_gentle_shutdown(LDAP	*ld)
+{
+	return slapd_gentle_shutdown != 0;
+}
+
 static int
 do_syncrep_search(
 	Operation *op,
@@ -621,6 +626,7 @@ do_syncrep_search(
 		goto done;
 	}
 	op->o_protocol = LDAP_VERSION3;
+	ldap_set_gentle_shutdown( si->si_ld, syncrep_gentle_shutdown );
 
 	/* Set SSF to strongest of TLS, SASL SSFs */
 	op->o_sasl_ssf = 0;
@@ -1433,6 +1439,8 @@ done:
 
 	if ( rc && rc != LDAP_SYNC_REFRESH_REQUIRED && si->si_ld ) {
 		if ( si->si_conn ) {
+			Debug( LDAP_DEBUG_ANY | LDAP_DEBUG_SYNC,
+				"do_syncrep_process: %s client-stop\n", si->si_ridtxt);
 			connection_client_stop( si->si_conn );
 			si->si_conn = NULL;
 		}
@@ -1461,15 +1469,16 @@ do_syncrepl(
 
 	if ( si == NULL )
 		return NULL;
-	if ( slapd_shutdown )
-		return NULL;
 
 	Debug( LDAP_DEBUG_TRACE, "=>do_syncrepl %s\n", si->si_ridtxt );
 
-	/* Don't get stuck here while a pause is initiated */
-	while ( ldap_pvt_thread_mutex_trylock( &si->si_mutex )) {
-		if ( slapd_shutdown )
+	for (;;) {
+		if ( slapd_shutdown ) {
 			return NULL;
+		}
+		if ( ! ldap_pvt_thread_mutex_trylock( &si->si_mutex ))
+			break;
+		/* Don't get stuck here while a pause is initiated */
 		if ( ! ldap_pvt_thread_pool_pausecheck( &connection_pool ))
 			ldap_pvt_thread_yield();
 	}
@@ -1489,7 +1498,9 @@ do_syncrepl(
 		return NULL;
 	}
 
-	if ( slapd_shutdown ) {
+	if ( slapd_gentle_shutdown ) {
+		Debug( LDAP_DEBUG_ANY | LDAP_DEBUG_SYNC,
+			"do_syncrepl: %s gentle shutdown\n", si->si_ridtxt);
 		if ( si->si_ld ) {
 			if ( si->si_conn ) {
 				connection_client_stop( si->si_conn );
@@ -1626,6 +1637,8 @@ deleted:
 	}
 
 	if ( dostop ) {
+		Debug( LDAP_DEBUG_ANY | LDAP_DEBUG_SYNC,
+			"do_syncrep: %s client-stop\n", si->si_ridtxt);
 		connection_client_stop( si->si_conn );
 		si->si_conn = NULL;
 	}
@@ -4513,6 +4526,8 @@ syncinfo_free( syncinfo_t *sie, int free_all )
 
 		if ( sie->si_ld ) {
 			if ( sie->si_conn ) {
+				Debug( LDAP_DEBUG_ANY | LDAP_DEBUG_SYNC,
+					"syncinfo_free: %s client-stop\n", sie->si_ridtxt);
 				connection_client_stop( sie->si_conn );
 				sie->si_conn = NULL;
 			}
@@ -5658,6 +5673,8 @@ syncrepl_config( ConfigArgs *c )
 							si->si_re = NULL;
 
 							if ( si->si_conn ) {
+								Debug( LDAP_DEBUG_ANY | LDAP_DEBUG_SYNC,
+									"syncinfo_config: %s client-stop\n", si->si_ridtxt);
 								connection_client_stop( si->si_conn );
 								si->si_conn = NULL;
 							}
