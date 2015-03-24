@@ -189,7 +189,7 @@ vc_exop(
 	struct berval mechanism = BER_BVNULL;
 
 	vc_conn_t *conn = NULL;
-	vc_cb_t vc = { 0 };
+	vc_cb_t vc = {{ 0 }};
 	slap_callback sc = { 0 };
 	SlapReply rs2 = { 0 };
 
@@ -389,7 +389,7 @@ done:;
 
 		} else {
 			if ( conn->conn != NULL ) {
-				vc_conn_t *tmp;
+				vc_conn_t *tmp ALLOW_UNUSED;
 
 				ldap_pvt_thread_mutex_lock( &vc_mutex );
 				tmp = avl_delete( &vc_tree, (caddr_t)conn, vc_conn_cmp );
@@ -425,7 +425,7 @@ vc_initialize( void )
 	if ( rc != LDAP_SUCCESS ) {
 		Debug( LDAP_DEBUG_ANY,
 			"vc_initialize: unable to register VerifyCredentials exop: %d.\n",
-			rc, 0, 0 );
+			rc );
 	}
 
 	ldap_pvt_thread_mutex_init( &vc_mutex );
@@ -438,4 +438,3 @@ init_module( int argc, char *argv[] )
 {
 	return vc_initialize();
 }
-
