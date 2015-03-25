@@ -1046,7 +1046,7 @@ slap_remove_control(
 
 	default:
 		/* handle all cases! */
-		assert( 0 );
+		LDAP_BUG();
 	}
 
 	return rs->sr_err;
@@ -2132,7 +2132,7 @@ slap_ctrl_whatFailed_add(
 		for ( ; rs->sr_ctrls[ i ] != NULL; i++ ) {
 			if ( strcmp( rs->sr_ctrls[ i ]->ldctl_oid, LDAP_CONTROL_X_WHATFAILED ) != 0 ) {
 				/* TODO: add */
-				assert( 0 );
+				LDAP_BUG();
 			}
 		}
 	}

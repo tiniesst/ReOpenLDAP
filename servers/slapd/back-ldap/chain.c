@@ -1556,7 +1556,7 @@ chain_cf_gen( ConfigArgs *c )
 			break;
 
 		default:
-			assert( 0 );
+			LDAP_BUG();
 			rc = 1;
 		}
 		return rc;
@@ -1731,7 +1731,7 @@ chain_cf_gen( ConfigArgs *c )
 		break;
 
 	default:
-		assert( 0 );
+		LDAP_BUG();
 		return 1;
 	}
 	return rc;

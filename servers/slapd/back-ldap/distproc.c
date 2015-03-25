@@ -525,7 +525,7 @@ distproc_cfgen( ConfigArgs *c )
 			break;
 
 		default:
-			assert( 0 );
+			LDAP_BUG();
 			rc = 1;
 		}
 		return rc;
@@ -555,7 +555,7 @@ distproc_cfgen( ConfigArgs *c )
 		break;
 
 	default:
-		assert( 0 );
+		LDAP_BUG();
 		return 1;
 	}
 

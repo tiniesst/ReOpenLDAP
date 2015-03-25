@@ -1722,7 +1722,7 @@ ldap_back_cancel(
 		return ldap_cancel_s( lc->lc_ld, msgid, NULL, NULL );
 	}
 
-	assert( 0 );
+	LDAP_BUG();
 
 	return LDAP_OTHER;
 }
@@ -2686,7 +2686,7 @@ ldap_back_proxy_authz_ctrl(
 		break;
 
 	default:
-		assert( 0 );
+		LDAP_BUG();
 	}
 
 	/* if we got here, "" is allowed to proxyAuthz */
