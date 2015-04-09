@@ -468,7 +468,7 @@ mdb_opinfo_get( Operation *op, struct mdb_info *mdb, int rdonly, mdb_op_info **m
 				assert(slap_biglock_owned(op->o_bd));
 				int flag = 0;
 				if ( get_lazyCommit( op ))
-					flag |= MDB_NOSYNC;
+					flag |= reopenldap_mode_iddqd() ? MDB_NOSYNC : MDB_NOMETASYNC;
 				rc = mdb_txn_begin( mdb->mi_dbenv, NULL, flag, &moi->moi_txn );
 				if (rc) {
 					Debug( LDAP_DEBUG_ANY, "mdb_opinfo_get: err %s(%d)\n",
