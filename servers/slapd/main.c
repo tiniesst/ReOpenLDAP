@@ -1090,6 +1090,8 @@ stop:
 
 	filter_destroy();
 
+	quorum_destroy();
+
 	schema_destroy();
 
 	lutil_passwd_destroy();
