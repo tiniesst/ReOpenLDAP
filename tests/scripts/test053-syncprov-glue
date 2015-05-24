@@ -109,17 +109,17 @@ if test $WAIT != 0 ; then
 fi
 KILLPIDS="$KILLPIDS $PID"
 cd $TESTWD
-sleep 1
+sleep 0.1
 echo "Using ldapsearch to check that provider slapd is running..."
-for i in 0 1 2 3 4 5; do
+for i in 1 2 3 4 5; do
 	$LDAPSEARCH -s base -b "" -H $URI1 \
 		'objectclass=*' > /dev/null 2>&1
 	RC=$?
 	if test $RC = 0 ; then
 		break
 	fi
-	echo "Waiting 5 seconds for slapd to start..."
-	sleep 5
+	echo "Waiting $i seconds for slapd to start..."
+	sleep $i
 done
 if test $RC != 0 ; then
 	echo "ldapsearch failed ($RC)!"
@@ -137,17 +137,17 @@ if test $WAIT != 0 ; then
 fi
 KILLPIDS="$KILLPIDS $PID"
 cd $TESTWD
-sleep 1
+sleep 0.1
 echo "Using ldapsearch to check that provider slapd is running..."
-for i in 0 1 2 3 4 5; do
+for i in 1 2 3 4 5; do
 	$LDAPSEARCH -s base -b "" -H $URI2 \
 		'objectclass=*' > /dev/null 2>&1
 	RC=$?
 	if test $RC = 0 ; then
 		break
 	fi
-	echo "Waiting 5 seconds for slapd to start..."
-	sleep 5
+	echo "Waiting $i seconds for slapd to start..."
+	sleep $i
 done
 if test $RC != 0 ; then
 	echo "ldapsearch failed ($RC)!"
@@ -165,17 +165,17 @@ if test $WAIT != 0 ; then
 fi
 KILLPIDS="$KILLPIDS $PID"
 cd $TESTWD
-sleep 1
+sleep 0.1
 echo "Using ldapsearch to check that consumer slapd is running..."
-for i in 0 1 2 3 4 5; do
+for i in 1 2 3 4 5; do
 	$LDAPSEARCH -s base -b "" -H $URI3 \
 		'objectclass=*' > /dev/null 2>&1
 	RC=$?
 	if test $RC = 0 ; then
 		break
 	fi
-	echo "Waiting 5 seconds for slapd to start..."
-	sleep 5
+	echo "Waiting $i seconds for slapd to start..."
+	sleep $i
 done
 if test $RC != 0 ; then
 	echo "ldapsearch failed ($RC)!"
@@ -424,18 +424,18 @@ if test $RC != 0 ; then
 	exit $RC
 fi
 
-echo "Using ldapsearch to check that consumer received changes..."
+echo -n "Using ldapsearch to check that consumer received changes..."
 RC=32
-for i in 0 1 2 3 4 5; do
+for i in $(seq 0 99); do
+	sleep $SLEEP0
 	RESULT=`$LDAPSEARCH -H $URI3 \
 		-s base -b "ou=ou1,$BASEDN" \
 		'(objectClass=*)' 2>&1 | awk '/^dn:/ {print "OK"}'`
 	if test "x$RESULT$nullOK" = "xOK" ; then
 		RC=0
+		echo " Ok"
 		break
 	fi
-	echo "Waiting $SLEEP1 seconds for syncrepl to receive changes..."
-	sleep $SLEEP1
 done
 if test $RC != 0 ; then
 	echo "ldapsearch failed ($RC)!"
@@ -458,20 +458,18 @@ if test $RC != 0 ; then
 	exit $RC
 fi
 
-sleep 1
-
-echo "Using ldapsearch to check that consumer received changes..."
+echo -n "Using ldapsearch to check that consumer received changes..."
 RC=32
-for i in 0 1 2 3 4 5; do
+for i in $(seq 0 99); do
+	sleep $SLEEP0
 	RESULT=`$LDAPSEARCH -H $URI3 \
 		-s base -b "ou=ou1,$BASEDN" \
 		'(description=Modify1)' 2>&1 | awk '/^dn:/ {print "OK"}'`
 	if test "x$RESULT$nullOK" = "xOK" ; then
 		RC=0
+		echo " Ok"
 		break
 	fi
-	echo "Waiting $SLEEP1 seconds for syncrepl to receive changes..."
-	sleep $SLEEP1
 done
 if test $RC != 0 ; then
 	echo "ldapsearch failed ($RC)!"
